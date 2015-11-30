@@ -1,5 +1,7 @@
 package com.example.anaskhurshid.sms;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,27 +30,28 @@ public class sms extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        send_btn= (Button) findViewById(R.id.btnSendSMS);
-        txt_num=(EditText)findViewById(R.id.editText);
+        send_btn = (Button) findViewById(R.id.btnSendSMS);
+        txt_num = (EditText) findViewById(R.id.editText);
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 sendSMSMessage();
             }
         });
+
     }
     protected void sendSMSMessage(){
         Log.i("Send SMS", "");
-        String cnic_No="hello";
-        String phone_no="03002416068";
+        String cnic_No=txt_num.getText().toString();
+        String phone_no="7000";
 
         String sent = "android.telephony.SmsManager.STATUS_ON_ICC_SENT";
 
         PendingIntent piSent = PendingIntent.getBroadcast(sms.this, 0,new Intent(sent), 0);
-
-        smsManager.sendTextMessage(phone_no, null, cnic_No, piSent, null);
+                smsManager.sendTextMessage(phone_no, null, cnic_No, piSent, null);
         Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
-
+        SmsReciever SmsReceive= new SmsReciever();
+        SmsReceive.onReceive(getBaseContext(), getIntent());
 
     }
     @Override
